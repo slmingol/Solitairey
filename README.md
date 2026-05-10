@@ -27,12 +27,37 @@ Current games include:
 Build Process:
 ==============
 
+### Traditional Build
+
 ```
 bash -ex bin/install-npm-deps.sh
 rake
 rake test
 rake upload
 ```
+
+### Podman Build
+
+For a containerized build and deployment using Podman (rootless, daemonless alternative to Docker):
+
+```bash
+# Quick setup
+./podman-setup.sh
+
+# Production mode (serves on port 8080)
+podman-compose up web
+# or: podman compose up web
+
+# Development mode (serves on port 8000)
+podman-compose --profile dev up dev
+
+# Build only
+podman-compose --profile build run --rm builder
+```
+
+See [PODMAN.md](PODMAN.md) for detailed Podman documentation.
+
+**Note**: The setup is fully compatible with Docker as well. Simply use `docker-compose` instead of `podman-compose`.
 
 License
 =======

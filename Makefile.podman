@@ -1,0 +1,74 @@
+.PHONY: help build up down dev logs clean rebuild test
+
+# Detect compose command (podman-compose or podman compose)
+COMPOSE := $(shell command -v podman-compose 2> /dev/null)
+ifndef COMPOSE
+	COMPOSE := podman compose
+endif
+
+# Default target
+help:
+	@echo "Solitairey Podman Commands"
+	@echo "==========================="
+	@echo "make build      - Build production image"
+	@echo "make up         - Start production server (port 8080)"
+	@echo "make down       - Stop all services"
+	@echo "make dev        - Start development server (port 8000)"
+	@echo "make logs       - View production logs"
+	@echo "make clean      - Remove containers and volumes"
+	@echo "make rebuild    - Clean rebuild from scratch"
+	@echo "make test       - Run build test"
+	@echo "make shell      - Open shell in production container"
+	@echo "make dev-shell  - Open shell in development container"
+
+# Build production image
+build:
+	$(COMPOSE) build web
+
+# Start production server
+up:
+	$(COMPOSE) up -d web
+	@echo "Solitairey is running at http://localhost:8080"
+
+# Stop all services
+down:
+	$(COMPOSE) down
+
+# Start development server
+dev:
+	$(COMPOSE) --profile dev up dev
+	@echo "Development server at http://localhost:8000"
+
+# View logs
+logs:
+	$(COMPOSE) logs -f web
+
+# Clean everything
+clean:
+	$(COMPOSE) down -v
+	podman system prune -f
+
+# Rebuild from scratch
+rebuild: clean
+	$(COMPOSE) build --no-cache web
+	$(COMPOSE) up -d web
+
+# Test build
+test:
+	$(COMPOSE) --profile build run --rm builder
+
+# Shell access
+shell:
+	$(COMPOSE) exec web sh
+
+# Development shell
+dev-shell:
+	$(COMPOSE) --profile dev run --rm dev bash
+
+# Quick start (build and run)
+start: build up
+	@echo "Solitairey started successfully!"
+
+# Full workflow (clean, build, test, run)
+full: clean build test up
+	@echo "Full build and deployment complete!"

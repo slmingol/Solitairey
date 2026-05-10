@@ -353,13 +353,14 @@ define([], function () {
 
                 createEvents: function () {
                     const container = Y.one(Solitaire.selector);
-                    if (false) {
-                        container.delegate("dblclick", Game.autoPlay, ".card");
-                        container.delegate(
-                            "contextmenu",
-                            Game.autoPlay,
-                            ".card",
-                        );
+                    if (true) {
+                        // Disabled automatic placement - use drag-and-drop for full control
+                        // container.delegate("dblclick", Game.autoPlay, ".card");
+                        // container.delegate(
+                        //     "contextmenu",
+                        //     Game.autoPlay,
+                        //     ".card",
+                        // );
 
                         container.delegate("click", Game.Events.click, ".card");
                         container.delegate(
@@ -593,21 +594,19 @@ define([], function () {
             });
 
             Y.Solitaire.Events = {
-                /*
-                click: function(e) {
-                    var card = e.target.getData("target");
+            click: function(e) {
+                var card = e.target.getData("target");
 
-                    if (card.dragging) {
-                        return;
-                    }
+                if (card.dragging) {
+                    return;
+                }
 
-                    card.dragging = false;
-                    card.turnOver(e);
-                    Solitaire.moves.reverse();
-                    Solitaire.endTurn();
-                    e.preventDefault();
-                },*/
-
+                card.dragging = false;
+                card.turnOver(e);
+                Solitaire.moves.reverse();
+                Solitaire.endTurn();
+                e.preventDefault();
+            },
                 clickEmptyDeck: function () {
                     Game.redeal();
                     Solitaire.moves.reverse();
