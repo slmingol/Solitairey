@@ -1,10 +1,11 @@
 .PHONY: help build up down dev logs clean rebuild test traditional shell dev-shell start full
 
 # Detect compose command (podman-compose or podman compose)
-COMPOSE := $(shell command -v podman-compose 2> /dev/null)
-ifndef COMPOSE
-	COMPOSE := podman compose
+COMPOSE_BIN := $(shell command -v podman-compose 2>/dev/null)
+ifndef COMPOSE_BIN
+	COMPOSE_BIN := podman compose
 endif
+COMPOSE := $(COMPOSE_BIN) -f docker/docker-compose.yml
 
 .DEFAULT_GOAL := help
 

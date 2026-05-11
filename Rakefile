@@ -50,7 +50,7 @@ COMBINED = "#{PREFIX}/combined-min.js"
 COMPRESSOR = 'bin/Run-YUI-Compressor'
 TEMPLATE = 'index.erb'
 
-IMAGES = Dir['{dondorf,layouts}/**/*.png', '*.{css,gif,png,jpg}'] +
+IMAGES = Dir['{dondorf,layouts}/**/*.png', '*.{gif,png,jpg}'] +
          ['green.webp', '.htaccess']
 
 DEST_INDEX = 'dest/index.html'
@@ -152,9 +152,9 @@ def dest_js(base)
 end
 
 dest_css = 'dest/cards.css'
-src_css = 'solitairey-cards.scss'
+src_css = 'src/scss/solitairey-cards.scss'
 
-file dest_css => [src_css, 'solitairey-cards--common.scss'] do
+file dest_css => [src_css, 'src/scss/solitairey-cards--common.scss'] do
   mkdir_p File.dirname(dest_css)
   # sh "pysassc --style compressed #{src_css} #{dest_css}"
   sh "pysassc #{src_css} #{dest_css}"

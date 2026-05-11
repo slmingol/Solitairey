@@ -53,7 +53,7 @@ FROM nginx:alpine
 COPY --from=builder /app/dest /usr/share/nginx/html
 
 # Copy nginx configuration
-COPY podman/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

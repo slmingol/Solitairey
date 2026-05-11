@@ -55,6 +55,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: docker/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -66,7 +67,7 @@ jobs:
       - name: Smoke test (PR only)
         if: github.event_name == 'pull_request'
         run: |
-          docker run -d --name smoke -p 8080:80 $(docker build -q .)
+          docker run -d --name smoke -p 8080:80 $(docker build -q -f docker/Dockerfile .)
           sleep 3
           curl -sf http://localhost:8080/ | grep -q 'Solitairey'
           docker rm -f smoke
@@ -89,6 +90,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: docker/Dockerfile
           load: true
           tags: scan-target:latest
           build-args: VERSION=scan

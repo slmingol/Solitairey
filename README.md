@@ -48,7 +48,7 @@ For a containerized build and deployment using Podman (rootless, daemonless alte
 
 ```bash
 # Quick setup
-./podman-setup.sh
+./docker/podman-setup.sh
 
 # Production mode (serves on port 8080)
 podman-compose up web
