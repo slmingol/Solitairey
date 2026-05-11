@@ -578,6 +578,19 @@
     }
 }
 
+#app-version {
+    position: fixed;
+    bottom: 8px;
+    right: 10px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+    z-index: 1;
+    font-family: monospace;
+    letter-spacing: 0.05em;
+    user-select: none;
+}
+
 #game-title {
     position: absolute;
     left: 10px;

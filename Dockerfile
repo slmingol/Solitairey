@@ -42,8 +42,9 @@ ENV PATH="/app/node_modules/.bin:$PATH"
 # Pre-create directory structure to avoid race conditions in parallel rake tasks
 RUN mkdir -p dest/js dest/dondorf dest/layouts
 
-# Build the project
-RUN rake
+# Build the project, stamping the version into the HTML via index.erb
+ARG VERSION=dev
+RUN echo "${VERSION}" > VERSION && rake
 
 # Production stage - nginx to serve static files
 FROM nginx:alpine
