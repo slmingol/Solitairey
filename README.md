@@ -38,25 +38,33 @@ This is a FOSS fork of the original repository by Paul Harrington, maintained wi
 
 ### Container (recommended)
 
-Requires Podman or Docker.
+Requires Podman or Docker Compose v2.
+
+**Production — compose only (no clone required):**
 
 ```bash
-# Clone
-git clone --recurse-submodules https://github.com/slmingol/Solitairey.git
-cd Solitairey
+curl -O https://raw.githubusercontent.com/slmingol/Solitairey/main/docker/docker-compose.yml
 
-# Build and run (port 8663)
-make build
-make up
-```
+# First deploy
+docker compose -f docker-compose.yml up -d web
 
-Or pull the pre-built image directly from GHCR:
+# Update to latest release
+docker compose -f docker-compose.yml up --pull always -d web
 
-```bash
-docker run -p 8663:80 ghcr.io/slmingol/solitairey:latest
+# Pin a specific version
+VERSION=1.1.0 docker compose -f docker-compose.yml up -d web
 ```
 
 Access at **http://localhost:8663**
+
+**Build from source:**
+
+```bash
+git clone --recurse-submodules https://github.com/slmingol/Solitairey.git
+cd Solitairey
+make build
+make up
+```
 
 ### Traditional Build
 
@@ -128,23 +136,27 @@ bin/           # Build helper scripts
 
 ### Versioning
 
-Version is stored in `VERSION` at the repo root. It is stamped into the built
-HTML at rake time and displayed in the lower-right corner of the UI.
+Versions are cut automatically via [semantic-release](https://semantic-release.gitbook.io/semantic-release/) based on [Conventional Commits](https://www.conventionalcommits.org/).
 
-To release a new version:
+| Commit prefix | Version bump |
+|---|---|
+| `fix:` | patch — `1.0.0` → `1.0.1` |
+| `feat:` | minor — `1.0.0` → `1.1.0` |
+| `feat!:` / `BREAKING CHANGE:` | major — `1.0.0` → `2.0.0` |
+| `chore:` / `docs:` / `refactor:` | no release |
 
-```bash
-echo "1.2.0" > VERSION
-git commit -m "Release v1.2.0" VERSION
-git tag -a v1.2.0 -m "Release v1.2.0"
-git push origin main --tags
-```
+On every push to `main`, semantic-release analyzes commits since the last tag. If a releasable commit exists it:
 
-The CI pipeline builds and pushes a tagged container image to GHCR automatically.
+1. Writes the new version to `VERSION`
+2. Updates `CHANGELOG.md`
+3. Commits both with `[skip ci]` and pushes a semver tag (e.g. `v1.1.0`)
+4. Creates a GitHub release
+
+The tag push then triggers the Docker workflow to build and publish the image to GHCR.
 
 ## Container Images
 
-Images are published to `ghcr.io/slmingol/solitairey` on every tagged release.
+Images are published to `ghcr.io/slmingol/solitairey` on every semver tag. No image is built on plain commits to `main` — only on releases cut by semantic-release.
 
 | Tag | Description |
 |---|---|
@@ -152,8 +164,7 @@ Images are published to `ghcr.io/slmingol/solitairey` on every tagged release.
 | `1.0.0` | Exact version |
 | `1.0` | Minor version |
 | `1` | Major version |
-| `main` | Latest commit on main |
-| `sha-<hash>` | Specific commit |
+| `sha-<hash>` | Specific commit (PRs only) |
 
 ## License
 
