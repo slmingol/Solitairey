@@ -1,3 +1,9 @@
+[![Build and Publish](https://github.com/slmingol/Solitairey/actions/workflows/docker.yml/badge.svg)](https://github.com/slmingol/Solitairey/actions/workflows/docker.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/slmingol/Solitairey?logo=github)](https://github.com/slmingol/Solitairey/releases)
+[![Container Image](https://img.shields.io/badge/ghcr.io-slmingol%2Fsolitairey-blue?logo=docker)](https://github.com/slmingol/Solitairey/pkgs/container/solitairey)
+[![License](https://img.shields.io/badge/license-BSD--2--Clause-blue)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/slmingol/Solitairey?style=social)](https://github.com/slmingol/Solitairey/stargazers)
+
 Solitairey is a JavaScript Solitaire collection using YUI 3.
 
 A [playable version is available online](https://foss-card-games.github.io/Solitairey/) on GitHub Pages.
