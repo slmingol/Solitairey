@@ -15,7 +15,7 @@ help:
 	@echo ""
 	@echo "Container (Podman/Docker compatible):"
 	@echo "  make build      - Build production image"
-	@echo "  make up         - Start production server (port 8080)"
+	@echo "  make up         - Start production server (port 8663)"
 	@echo "  make down       - Stop all services"
 	@echo "  make dev        - Start development server (port 8000)"
 	@echo "  make logs       - View production logs"
@@ -33,7 +33,7 @@ build:
 
 up:
 	$(COMPOSE) up -d web
-	@echo "Solitairey is running at http://localhost:8080"
+	@echo "Solitairey is running at http://localhost:8663"
 
 down:
 	$(COMPOSE) down

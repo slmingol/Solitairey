@@ -45,7 +45,7 @@ Requires Podman or Docker.
 git clone --recurse-submodules https://github.com/slmingol/Solitairey.git
 cd Solitairey
 
-# Build and run (port 8080)
+# Build and run (port 8663)
 make build
 make up
 ```
@@ -53,10 +53,10 @@ make up
 Or pull the pre-built image directly from GHCR:
 
 ```bash
-docker run -p 8080:80 ghcr.io/slmingol/solitairey:latest
+docker run -p 8663:80 ghcr.io/slmingol/solitairey:latest
 ```
 
-Access at **http://localhost:8080**
+Access at **http://localhost:8663**
 
 ### Traditional Build
 
@@ -75,7 +75,7 @@ All commands use Podman by default; substitute `docker`/`docker-compose` if pref
 
 ```bash
 make build       # Build production image
-make up          # Start server on port 8080
+make up          # Start server on port 8663
 make down        # Stop server
 make dev         # Start dev server on port 8000 (live source mount)
 make rebuild     # Clean rebuild from scratch
