@@ -5,7 +5,6 @@ services:
   # Production build - serves built static files
   web:
     image: ghcr.io/slmingol/solitairey:${VERSION:-latest}
-    pull_policy: always
     build:
       context: .
       dockerfile: docker/Dockerfile
