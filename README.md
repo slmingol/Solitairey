@@ -4,94 +4,157 @@
 [![License](https://img.shields.io/badge/license-BSD--2--Clause-blue)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/slmingol/Solitairey?style=social)](https://github.com/slmingol/Solitairey/stargazers)
 
-Solitairey is a JavaScript Solitaire collection using YUI 3.
+# Solitairey
 
-A [playable version is available online](https://foss-card-games.github.io/Solitairey/) on GitHub Pages.
+A collection of 18 solitaire card games for the web, built with HTML5 and YUI 3. Playable in any modern browser with no installation required.
 
-This is a [FOSS](https://en.wikipedia.org/wiki/Free_and_open-source_software) fork of the most recent version
-of the original repository by Paul Harrington that had a LICENSE file.
+**[Play it online](https://foss-card-games.github.io/Solitairey/)**
 
-Current games include:
+This is a FOSS fork of the original repository by Paul Harrington, maintained with bug fixes, container support, and CI/CD improvements.
 
-- Agnes
-- Flower Garden
-- Forty Thieves
-- Freecell
-- Golf
-- Grandfather's Clock
-- Klondike
-- Monte Carlo
-- Pyramid
-- Russian Solitaire
-- Scorpion
-- Spider (1, 2, and 4 Suit)
-- Spiderette
-- Tri Towers
-- Will O' The Wisp
-- Yukon
+## Games
 
-Build Process:
-==============
+| Game | Difficulty |
+|---|---|
+| Agnes | Medium |
+| Flower Garden | Medium |
+| Forty Thieves | Hard |
+| Freecell | Medium |
+| Golf | Easy |
+| Grandfather's Clock | Easy |
+| Klondike | Hard |
+| Klondike (Vegas Style) | Hard |
+| Monte Carlo | Easy |
+| Pyramid | Hard |
+| Russian Solitaire | Hard |
+| Scorpion | Hard |
+| Spider (1, 2, 4 Suit) | Easy–Hard |
+| Spiderette | Hard |
+| Tri Towers | Easy |
+| Will O' The Wisp | Hard |
+| Yukon | Medium |
+
+## Quick Start
+
+### Container (recommended)
+
+Requires Podman or Docker.
+
+```bash
+# Clone
+git clone --recurse-submodules https://github.com/slmingol/Solitairey.git
+cd Solitairey
+
+# Build and run (port 8080)
+make build
+make up
+```
+
+Or pull the pre-built image directly from GHCR:
+
+```bash
+docker run -p 8080:80 ghcr.io/slmingol/solitairey:latest
+```
+
+Access at **http://localhost:8080**
 
 ### Traditional Build
 
-```
-bash -ex bin/install-npm-deps.sh
-rake
-rake test
-rake upload
-```
-
-### Podman Build
-
-For a containerized build and deployment using Podman (rootless, daemonless alternative to Docker):
+Requires Ruby, Node.js, Perl, GraphicsMagick, and libsass.
 
 ```bash
-# Quick setup
-./docker/podman-setup.sh
-
-# Production mode (serves on port 8080)
-podman-compose up web
-# or: podman compose up web
-
-# Development mode (serves on port 8000)
-podman-compose --profile dev up dev
-
-# Build only
-podman-compose --profile build run --rm builder
+bash -ex bin/install-npm-deps.sh
+rake
 ```
 
-See [PODMAN.md](PODMAN.md) for detailed Podman documentation.
+Built output lands in `dest/`. Serve it with any static file server.
 
-**Note**: The setup is fully compatible with Docker as well. Simply use `docker-compose` instead of `podman-compose`.
+## Container Commands
 
-License
-=======
+All commands use Podman by default; substitute `docker`/`docker-compose` if preferred.
 
-(FreeBSD License)
+```bash
+make build       # Build production image
+make up          # Start server on port 8080
+make down        # Stop server
+make dev         # Start dev server on port 8000 (live source mount)
+make rebuild     # Clean rebuild from scratch
+make test        # Build-only smoke test
+make logs        # Tail server logs
+make shell       # Shell into running container
+```
 
-Copyright 2011 Paul Harrington <pharrington@solitairey.com>. All rights reserved.
+See [PODMAN.md](PODMAN.md) for detailed container documentation.
 
-Redistribution and use in source and binary forms, with or without modification, are
-permitted provided that the following conditions are met:
+## Development
 
-   1. Redistributions of source code must retain the above copyright notice, this list of
-      conditions and the following disclaimer.
+### Prerequisites
 
-   2. Redistributions in binary form must reproduce the above copyright notice, this list
-      of conditions and the following disclaimer in the documentation and/or other materials
-      provided with the distribution.
+| Tool | Purpose |
+|---|---|
+| Ruby 3.2+ | Rake build system |
+| Node.js 20+ | JS bundling and TypeScript |
+| Perl + CPAN | YUI Compressor script |
+| GraphicsMagick | Image format conversion |
+| libsass (Python) | SCSS compilation |
+| Podman or Docker | Container builds |
 
-THIS SOFTWARE IS PROVIDED BY PAUL HARRINGTON ''AS IS'' AND ANY EXPRESS OR IMPLIED
-WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL PAUL HARRINGTON OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+### Repository Layout
 
-The views and conclusions contained in the software and documentation are those of the
-authors and should not be interpreted as representing official policies, either expressed
-or implied, of Paul Harrington <pharrington@solitairey.com>.
+```
+src/
+  js/          # Game logic (YUI 3 modules)
+  ts/          # TypeScript utilities
+  scss/        # SCSS stylesheets
+  images/      # Web assets (gif, png, jpg, webp)
+docker/        # Dockerfile, compose files, nginx config
+docs/          # Built output committed for GitHub Pages
+dondorf/       # Card face image assets
+layouts/       # Game layout images
+ext/           # External dependencies (YUI)
+bin/           # Build helper scripts
+```
+
+### Build Pipeline
+
+`rake` compiles everything into `dest/`:
+
+- `src/scss/solitairey-cards.scss` → `dest/cards.css`
+- `src/js/*.js` + `src/ts/*.ts` → `dest/js/`
+- `index.erb` → `dest/index.html`
+- `src/images/*` → `dest/` (flat copy)
+
+`docs/` is a committed snapshot of `dest/` used for GitHub Pages.
+
+### Versioning
+
+Version is stored in `VERSION` at the repo root. It is stamped into the built
+HTML at rake time and displayed in the lower-right corner of the UI.
+
+To release a new version:
+
+```bash
+echo "1.2.0" > VERSION
+git commit -m "Release v1.2.0" VERSION
+git tag -a v1.2.0 -m "Release v1.2.0"
+git push origin main --tags
+```
+
+The CI pipeline builds and pushes a tagged container image to GHCR automatically.
+
+## Container Images
+
+Images are published to `ghcr.io/slmingol/solitairey` on every tagged release.
+
+| Tag | Description |
+|---|---|
+| `latest` | Most recent tagged release |
+| `1.0.0` | Exact version |
+| `1.0` | Minor version |
+| `1` | Major version |
+| `main` | Latest commit on main |
+| `sha-<hash>` | Specific commit |
+
+## License
+
+BSD 2-Clause. Copyright 2011 Paul Harrington. See [LICENSE](LICENSE) for full text.
