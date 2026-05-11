@@ -119,6 +119,7 @@
     position: absolute;
     // position: relative;
     border-radius: 7px;
+    touch-action: none;
 }
 .stack {
     @if $Solitairey {

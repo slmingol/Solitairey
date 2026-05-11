@@ -2,7 +2,7 @@ define(["./solitaire"], function (solitaire) {
     YUI.add(
         "solitaire-ios",
         function (Y) {
-            if (!Y.UA.ios) {
+            if (!Y.UA.ios && !Y.UA.android && !('ontouchstart' in window) && !navigator.maxTouchPoints) {
                 return;
             }
 
@@ -508,7 +508,7 @@ define(["./solitaire"], function (solitaire) {
 
             function optionWithOrientation(option) {
                 var orientation =
-                        window.innerWidth === 480 ? LANDSCAPE : PORTRAIT,
+                        window.matchMedia("(orientation: landscape)").matches ? LANDSCAPE : PORTRAIT,
                     o;
 
                 if (!option.length) {
@@ -694,7 +694,7 @@ define(["./solitaire"], function (solitaire) {
 
             function setLayout() {
                 var game = Solitaire.name(),
-                    landscape = window.innerWidth === 480,
+                    landscape = window.matchMedia("(orientation: landscape)").matches,
                     msh = maxStackHeight();
 
                 setStyles(landscape);
