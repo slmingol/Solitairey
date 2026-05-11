@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/slmingol/Solitairey/compare/v1.1.1...v1.1.2) (2026-05-11)
+
+
+### Bug Fixes
+
+* **mobile:** viewport meta, touch-action, broader device detection, orientation ([b3e2549](https://github.com/slmingol/Solitairey/commit/b3e25498e27415a563f77b3dd12703dfa8421fa9))
+
 ## [1.1.1](https://github.com/slmingol/Solitairey/compare/v1.1.0...v1.1.1) (2026-05-11)
 
 
