@@ -50,8 +50,8 @@ COMBINED = "#{PREFIX}/combined-min.js"
 COMPRESSOR = 'bin/Run-YUI-Compressor'
 TEMPLATE = 'index.erb'
 
-IMAGES = Dir['{dondorf,layouts}/**/*.png', '*.{gif,png,jpg}'] +
-         ['green.webp', '.htaccess']
+IMAGES = Dir['{dondorf,layouts}/**/*.png'] + ['.htaccess']
+IMG_FLAT = Dir['src/images/*.{gif,png,jpg,webp}']
 
 DEST_INDEX = 'dest/index.html'
 DEST_INDEX_DEV = 'dest/index-dev.html'
@@ -72,6 +72,16 @@ IMAGES.each do |img|
   file d => img do
     mkdir_p File.dirname(d)
     cp img.to_s, d.to_s
+  end
+end
+
+# Flat-copy: src/images/* -> dest/<basename>
+IMG_FLAT.each do |img|
+  d = "dest/#{File.basename(img)}"
+  dest_images << d
+  file d => img do
+    mkdir_p 'dest'
+    cp img, d
   end
 end
 
@@ -227,9 +237,6 @@ file DEST_INDEX_DEV_X => TEMPLATE do
   create_index DEST_INDEX_DEV_X, true
 end
 
-file 'green.webp' => 'green.jpg' do
-  sh 'gm convert green.jpg green.webp'
-end
 
 desc 'production file with separated, unminified source files'
 file DEST_INDEX => [TEMPLATE, COMBINED] do
