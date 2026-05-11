@@ -21,7 +21,7 @@ podman-compose up web
 podman compose up web
 ```
 
-Access the application at: http://localhost:8080
+Access the application at: http://localhost:8663
 
 ### Development Mode
 
@@ -58,7 +58,7 @@ The built files will be in the `dest/` directory on your host machine.
 ### web (default)
 - Multi-stage build creating optimized production image
 - Nginx serving pre-built static files
-- Port: 8080
+- Port: 8663
 - Image size: ~50MB (nginx:alpine + built files)
 
 ### dev (profile: dev)
@@ -139,7 +139,7 @@ podman-compose --profile build run --rm builder
 
 ### Port Conflicts
 
-If ports 8080 or 8000 are already in use, modify `docker-compose.yml`:
+If ports 8663 or 8000 are already in use, modify `docker-compose.yml`:
 
 ```yaml
 ports:
@@ -185,7 +185,7 @@ podman-compose build --no-cache
 Create a `.env` file in the project root for custom configuration:
 
 ```env
-WEB_PORT=8080
+WEB_PORT=8663
 DEV_PORT=8000
 ```
 
