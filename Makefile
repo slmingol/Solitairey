@@ -17,6 +17,7 @@ help:
 	@echo "  make build      - Build production image"
 	@echo "  make up         - Start production server (port 8663)"
 	@echo "  make down       - Stop all services"
+	@echo "  make dev-build  - Build dev image (run once, then cached)"
 	@echo "  make dev        - Start development server (port 8000)"
 	@echo "  make logs       - View production logs"
 	@echo "  make clean      - Remove containers and volumes"
@@ -30,6 +31,9 @@ help:
 
 build:
 	$(COMPOSE) build web
+
+dev-build:
+	$(COMPOSE) build dev
 
 up:
 	$(COMPOSE) up -d web

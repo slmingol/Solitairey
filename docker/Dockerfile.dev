@@ -1,0 +1,15 @@
+FROM ruby:3.2-slim
+
+RUN apt-get update && apt-get install -y \
+    curl git build-essential python3 python3-pip python3-venv \
+    perl cpanminus graphicsmagick rsync \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && pip3 install --break-system-packages libsass \
+    && cpanm Path::Tiny Getopt::Long File::Temp \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+CMD ["bash", "-c", "npm install && rake && cd dest && python3 -m http.server 8000"]
