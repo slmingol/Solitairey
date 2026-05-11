@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/slmingol/Solitairey/compare/v1.1.0...v1.1.1) (2026-05-11)
+
+
+### Bug Fixes
+
+* **ci:** trigger docker build on release published, not tag push ([134dd3f](https://github.com/slmingol/Solitairey/commit/134dd3f6caefd922e13fd2202f01f44365f27297))
+
 # [1.1.0](https://github.com/slmingol/Solitairey/compare/v1.0.0...v1.1.0) (2026-05-11)
 
 
