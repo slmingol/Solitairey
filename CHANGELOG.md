@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/slmingol/Solitairey/compare/v1.1.2...v1.1.3) (2026-05-12)
+
+
+### Bug Fixes
+
+* **mobile:** restore pinch-zoom and auto-scale game to viewport ([fb1ce25](https://github.com/slmingol/Solitairey/commit/fb1ce258e626251c0a1a7b6cc4e1f0b44bfd251f))
+
 ## [1.1.2](https://github.com/slmingol/Solitairey/compare/v1.1.1...v1.1.2) (2026-05-11)
 
 
