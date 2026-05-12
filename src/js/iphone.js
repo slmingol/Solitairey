@@ -714,9 +714,44 @@ define(["./solitaire"], function (solitaire) {
                 }, 10);
             }
 
+            function fitToViewport() {
+                var body = document.body,
+                    vw = window.innerWidth,
+                    vh = window.innerHeight,
+                    landscape = vw > vh,
+                    elements = document.querySelectorAll(".stack, .card"),
+                    maxRight = 0,
+                    maxBottom = 0,
+                    i, r, scaleX, scaleY, factor;
+
+                body.style.transform = "";
+                body.style.overflow = "";
+                void body.offsetWidth;
+
+                for (i = 0; i < elements.length; i++) {
+                    r = elements[i].getBoundingClientRect();
+                    if (r.right > maxRight) { maxRight = r.right; }
+                    if (r.bottom > maxBottom) { maxBottom = r.bottom; }
+                }
+
+                if (!maxRight) { return; }
+
+                scaleX = vw / maxRight;
+                scaleY = landscape ? vh / maxBottom : Infinity;
+                factor = Math.min(scaleX, scaleY, 2.5);
+
+                if (factor < 0.04 || Math.abs(factor - 1) < 0.04) { return; }
+
+                body.style.transform = "scale(" + factor.toFixed(4) + ")";
+                body.style.transformOrigin = "0 0";
+                body.style.overflow = "hidden";
+            }
+
             Y.on("beforeSetup", setLayout);
+            Y.on("afterSetup", fitToViewport);
             Y.on("beforeResize", setLayout);
             Y.on("afterResize", scrollToTop);
+            Y.on("afterResize", fitToViewport);
             Y.on("load", scrollToTop);
 
             Y.on(
